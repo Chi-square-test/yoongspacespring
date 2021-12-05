@@ -4,7 +4,7 @@ LABEL maintainer="luckykr1234@gmail.com"
 
 EXPOSE 7963
 
-ARG JAR_FILE=build/libs/*.jar
+ARG JAR_FILE=demo/build/libs/*.jar
 
 COPY ${JAR_FILE} yoongspace-springboot.jar
 

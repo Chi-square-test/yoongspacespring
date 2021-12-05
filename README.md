@@ -1,5 +1,4 @@
 # yoongspacespring
-----------------------
 
 YoongSpace 웹서비스의 콘텐츠를 제공하는 API 프로젝트입니다.
 기본적으로  **Spring Boot**를 기반으로 제작되어져있고 RESTful을 지향하도록 설계되어져있습니다.
@@ -9,7 +8,7 @@ YoongSpace 웹서비스의 콘텐츠를 제공하는 API 프로젝트입니다.
 
 
 ------------
-처음 만들어보는 Public repository 입니다.
-Readme도 점차 수정해나갈 예정...
+_처음 만들어보는 Public repository 입니다._
+_Readme도 점차 수정해나갈 예정..._
 ------------
 

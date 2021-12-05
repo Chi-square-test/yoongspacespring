@@ -8,5 +8,5 @@ ARG JAR_FILE=build/libs/*.jar
 
 COPY ${JAR_FILE} yoongspace-springboot.jar
 
-ENTRYPOINT ["java","${JAVA_OPTS}","-jar","/to-do-springboot.jar"]
+ENTRYPOINT ["java","${JAVA_OPTS}","-jar","/yoongspace-springboot.jar"]
 

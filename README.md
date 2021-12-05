@@ -1,7 +1,7 @@
 # yoongspacespring
 ------------
-*처음 만들어보는 Public repository 입니다.*
-*Readme도 점차 수정해나갈 예정...*
+처음 만들어보는 Public repository 입니다.
+Readme도 점차 수정해나갈 예정...
 ------------
 
 YoongSpace 웹서비스의 콘텐츠를 제공하는 API 프로젝트입니다.

@@ -9,7 +9,7 @@ import org.hibernate.annotations.GeneratorType;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.List;
+
 
 @Builder
 @NoArgsConstructor

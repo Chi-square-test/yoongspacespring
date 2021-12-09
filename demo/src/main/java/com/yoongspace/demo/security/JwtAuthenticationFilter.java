@@ -30,8 +30,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String token = parseBearerToken(request);
+            String studentid="";
             if (token!=null&&!token.equalsIgnoreCase("null")){
-                String studentid=tokenProvider.validateAndGetUserId(token);
+                if(token!=null&& tokenProvider.validateToken(token)){
+                    studentid=tokenProvider.validateAndGetUserId(token);
+                }
                 log.info("인증된 사용자 : "+studentid);
                 AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         studentid,

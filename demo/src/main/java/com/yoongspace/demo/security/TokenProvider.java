@@ -2,6 +2,7 @@ package com.yoongspace.demo.security;
 
 import com.yoongspace.demo.model.UserEntity;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +18,16 @@ import java.util.Date;
 public class TokenProvider {
 
     private static String SECRET_KEY;
+    private static String REFRESH_KEY;
 
     @Value("${jwt-tokens.value}")
     private void setSecretKey(String key){
         SECRET_KEY=key;
+    }
+
+    @Value("${jwt-tokens.value}")
+    private void setRefreshKey(String key){
+        REFRESH_KEY=key;
     }
 
     public  String create(UserEntity userEntity){
@@ -43,5 +50,14 @@ public class TokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
         return  claims.getSubject();
+    }
+
+    public boolean validateToken(String jwtToken) {
+        try {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
+            return !claims.getBody().getExpiration().before(new Date());
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

@@ -17,7 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Security;
+
 
 @Slf4j
 @Component
@@ -26,12 +26,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private  TokenProvider tokenProvider;
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String token = parseBearerToken(request);
+            String studentid="";
             if (token!=null&&!token.equalsIgnoreCase("null")){
-                String studentid=tokenProvider.validateAndGetUserId(token);
+                if(!tokenProvider.isTokenExpired(token)){
+                    studentid=tokenProvider.validateAndGetUserId(token);
+                }
                 log.info("인증된 사용자 : "+studentid);
                 AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         studentid,

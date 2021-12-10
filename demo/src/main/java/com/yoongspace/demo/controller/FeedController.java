@@ -30,6 +30,7 @@ public class FeedController {
         return ResponseEntity.ok().body(res);
     }
 
+
     @PostMapping("/write")
     public ResponseEntity<?> createFeed(@AuthenticationPrincipal String studentid, @RequestBody FeedDTO feedDTO){
         try{

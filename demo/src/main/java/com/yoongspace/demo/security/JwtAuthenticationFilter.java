@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = parseBearerToken(request);
             String studentid="";
             if (token!=null&&!token.equalsIgnoreCase("null")){
-                if(token!=null&& tokenProvider.isTokenExpired(token)){
+                if(!tokenProvider.isTokenExpired(token)){
                     studentid=tokenProvider.validateAndGetUserId(token);
                 }
                 log.info("인증된 사용자 : "+studentid);

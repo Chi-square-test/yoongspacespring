@@ -36,6 +36,7 @@ public class FeedService {
         List<FriendEntity> friendEntities;
         all=repo.findByOnlyfriend(false);
         log.info(studentId);
+        all.addAll(repo.findByOnlyfriendAndStudentid(true,studentId));
         if (!frepo.findByFriendA(studentId).isEmpty()){
             friendEntities = frepo.findByFriendA(studentId);
             for(FriendEntity fe:friendEntities){

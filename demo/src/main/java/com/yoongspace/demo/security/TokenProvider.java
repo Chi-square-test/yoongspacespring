@@ -59,5 +59,14 @@ public class TokenProvider {
                 .getExpiration();
         return expiration.before(new Date());
     }
+    public Long getExpiration(String token) {
+        final Date expiration = Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+        Long now = new Date().getTime();
+        return (expiration.getTime() - now);
+    }
 
 }

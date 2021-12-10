@@ -21,14 +21,17 @@ public class TokenProvider {
         SECRET_KEY=key;
     }
 
-    public String create(UserEntity userEntity){
-        long expireTime =1000L * 10;
+    public  String create(UserEntity userEntity){
+        Date expiryDate = Date.from(
+                Instant.now()
+                        .plus(1, ChronoUnit.DAYS)
+        );
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512,SECRET_KEY)
                 .setSubject(userEntity.getStudentid())
                 .setIssuer("Test yoongspace")
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expireTime))
+                .setExpiration(expiryDate)
                 .compact();
     }
 

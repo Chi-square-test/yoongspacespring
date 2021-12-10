@@ -1,10 +1,7 @@
 package com.yoongspace.demo.security;
 
 import com.yoongspace.demo.model.UserEntity;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,29 +15,31 @@ import java.util.Date;
 public class TokenProvider {
 
     private static String SECRET_KEY;
-    private static String REFRESH_KEY;
 
     @Value("${jwt-tokens.value}")
     private void setSecretKey(String key){
         SECRET_KEY=key;
     }
 
-    @Value("${jwt-tokens.value}")
-    private void setRefreshKey(String key){
-        REFRESH_KEY=key;
-    }
-
-    public  String create(UserEntity userEntity){
-        Date expiryDate = Date.from(
-                Instant.now()
-                        .plus(1, ChronoUnit.DAYS)
-        );
+    public String create(UserEntity userEntity){
+        long expireTime =1000L * 10;
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512,SECRET_KEY)
                 .setSubject(userEntity.getStudentid())
                 .setIssuer("Test yoongspace")
                 .setIssuedAt(new Date())
-                .setExpiration(expiryDate)
+                .setExpiration(new Date(System.currentTimeMillis() + expireTime))
+                .compact();
+    }
+
+    public String createRefresh(UserEntity userEntity){
+        long expireTime = 1000L * 60 * 24 * 2;
+        return Jwts.builder()
+                .signWith(SignatureAlgorithm.HS512,SECRET_KEY)
+                .setSubject(userEntity.getStudentid())
+                .setIssuer("Test yoongspace")
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expireTime))
                 .compact();
     }
 
@@ -52,12 +51,13 @@ public class TokenProvider {
         return  claims.getSubject();
     }
 
-    public boolean validateToken(String jwtToken) {
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (Exception e) {
-            return false;
-        }
+    public Boolean isTokenExpired(String token) {
+        final Date expiration = Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+        return expiration.before(new Date());
     }
+
 }

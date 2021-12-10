@@ -26,13 +26,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private  TokenProvider tokenProvider;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String token = parseBearerToken(request);
             String studentid="";
             if (token!=null&&!token.equalsIgnoreCase("null")){
-                if(token!=null&& tokenProvider.validateToken(token)){
+                if(token!=null&& tokenProvider.isTokenExpired(token)){
                     studentid=tokenProvider.validateAndGetUserId(token);
                 }
                 log.info("인증된 사용자 : "+studentid);

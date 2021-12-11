@@ -20,6 +20,8 @@ public class CommentDTO {
     private String commenttext;
     private String studentid;
     private String commentwrite;
+    private String writername;
+    private String writerinform;
 
     public CommentDTO(final CommentEntity entity){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd a hh:mm:ss");
@@ -28,6 +30,8 @@ public class CommentDTO {
         this.commenttext=entity.getCommenttext();
         this.studentid=entity.getStudentid();
         this.commentwrite=df.format(entity.getCommentwrite());
+        this.writername=entity.getWritername();
+        this.writerinform=entity.getWriterinform();
 
     }
 

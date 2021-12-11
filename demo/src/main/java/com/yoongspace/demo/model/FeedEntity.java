@@ -43,6 +43,11 @@ public class FeedEntity {
     @CreationTimestamp
     Date feedwrite;
 
+    @Column(nullable = false)
+    private String writername;
+
+    @Column(nullable = false)
+    private String writerinform;
 
 
 

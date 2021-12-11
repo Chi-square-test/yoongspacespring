@@ -2,8 +2,11 @@ package com.yoongspace.demo.service;
 
 import com.yoongspace.demo.model.FeedEntity;
 import com.yoongspace.demo.model.FriendEntity;
+import com.yoongspace.demo.model.LikeEntity;
+import com.yoongspace.demo.persistence.CommentRepo;
 import com.yoongspace.demo.persistence.FeedRepo;
 import com.yoongspace.demo.persistence.FriendRepo;
+import com.yoongspace.demo.persistence.LikeRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,8 @@ import java.util.Optional;
 @Service
 public class FeedService {
 
+    @Autowired
+    private LikeRepo Lrepo;
 
     @Autowired
     private FeedRepo repo;
@@ -54,13 +59,16 @@ public class FeedService {
             feed.setFeedtext(entity.getFeedtext());
             feed.setOnlyfriend(entity.isOnlyfriend());
             repo.save(feed);
+            log.info("게시글 수정 ",entity.getId());
         });
+
         return allfeed(entity.getStudentid());
     }
 
     public List<FeedEntity> delete(final FeedEntity entity){
         validate(entity,true);
         try{
+            log.info("게시글 삭제 ",entity.getId());
             repo.delete(entity);
         } catch (Exception e){
             log.error("error deleting entity",entity.getId(),e);
@@ -86,6 +94,36 @@ public class FeedService {
         if(repo.countByIdAndStudentid(feedid,studentid)==0){
             log.warn("NOT OWNER");
             throw new RuntimeException("작성자만 수정/삭제할 수 있습니다.");
+        }
+    }
+
+    public Long liketoggle(final String feedid, final String studentid){
+        final Long[] likecount = {0L};
+        try{
+            if(Lrepo.existsByFeedidAndStudentid(feedid,studentid)){
+                LikeEntity likeEntity = Lrepo.findByFeedidAndStudentid(feedid,studentid);
+                Lrepo.delete(likeEntity);
+                final Optional<FeedEntity> original = repo.findById(new Long(feedid).longValue());
+                original.ifPresent(feed->{
+                    feed.setFeedlike(feed.getFeedlike()-1);
+                    repo.save(feed);
+                    likecount[0] =feed.getFeedlike();
+                });
+                return likecount[0];
+            }
+            else{
+                LikeEntity likeEntity = new LikeEntity(null,feedid,studentid);
+                Lrepo.save(likeEntity);
+                final Optional<FeedEntity> original = repo.findById(Long.parseLong(feedid));
+                original.ifPresent(feed->{
+                    feed.setFeedlike(feed.getFeedlike()+1);
+                    repo.save(feed);
+                    likecount[0] =feed.getFeedlike();
+                });
+                return likecount[0];
+            }
+        }catch(Exception e){
+            throw new RuntimeException("잘못된 좋아요 요청입니다.");
         }
     }
 

@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Builder
 @NoArgsConstructor
@@ -19,7 +21,7 @@ public class CommentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "feed_id")
+    @Column
     private String feedid;
 
     @Column(nullable = false)
@@ -27,4 +29,7 @@ public class CommentEntity {
 
     @Column(nullable = false)
     private String studentid;
+
+    @CreationTimestamp
+    Date commentwrite;
 }

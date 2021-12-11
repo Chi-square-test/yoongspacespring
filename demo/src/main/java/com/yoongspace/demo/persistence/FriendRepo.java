@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface FriendRepo extends JpaRepository<FriendEntity, String> {
     List<FriendEntity> findByFriendA(String friendA);
+    Boolean existsByFriendAAndFriendB(String friendA,String friendB);
 }

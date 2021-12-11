@@ -461,6 +461,49 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "userinfo",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({ key: 'Authorization', value: 'Bearer '+ pm.globals.get(\"test_value\")});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"유저 정보 체크\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data[0].username).to.eql(\"testguy\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/yoongfeed/currentuser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"yoongfeed",
+						"currentuser"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

@@ -5,10 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GeneratorType;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Builder
@@ -37,6 +39,9 @@ public class FeedEntity {
 
     @Column(nullable = false)
     private String studentid;
+
+    @CreationTimestamp
+    Date feedwrite;
 
 
 

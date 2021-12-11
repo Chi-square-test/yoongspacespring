@@ -65,6 +65,7 @@ public class FeedController {
         try{
             feedService.checkowner(Long.valueOf(dto.getId()),studentid);
             FeedEntity entity = FeedDTO.toEntity(dto);
+            entity.setId(dto.getId());
             entity.setStudentid(studentid);
             List<FeedEntity> entities = feedService.update(entity);
             List<FeedDTO> dtos = entities.stream().map(FeedDTO::new).collect(Collectors.toList());
@@ -83,6 +84,7 @@ public class FeedController {
         try{
             feedService.checkowner(dto.getId(),studentid);
             FeedEntity entity = FeedDTO.toEntity(dto);
+            entity.setId(dto.getId());
             entity.setStudentid(studentid);
             List<FeedEntity> entities = feedService.delete(entity);
             List<FeedDTO> dtos = entities.stream().map(FeedDTO::new).collect(Collectors.toList());

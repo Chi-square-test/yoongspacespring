@@ -2,6 +2,7 @@ package com.yoongspace.demo.controller;
 
 import com.yoongspace.demo.DTO.FeedDTO;
 import com.yoongspace.demo.DTO.ResponseDTO;
+import com.yoongspace.demo.DTO.UserInfoDTO;
 import com.yoongspace.demo.model.FeedEntity;
 import com.yoongspace.demo.service.FeedService;
 import com.yoongspace.demo.service.UserService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,6 +104,18 @@ public class FeedController {
             ResponseDTO<FeedDTO> res = ResponseDTO.<FeedDTO>builder().error(error).build();
             return ResponseEntity.badRequest().body(res);
         }
+    }
+
+    @GetMapping("/currentuser") //새로운 컨트롤러로 분리해야하지만 임시로 피드에서 관리
+    public ResponseEntity<?> connectuserinfo(@AuthenticationPrincipal String studentid){
+        String username=userService.getStudentname(studentid);
+        String userinfo=userService.getStudentinfo(studentid);
+        UserInfoDTO userInfoDTO =new UserInfoDTO(username,userinfo);
+        List<UserInfoDTO> dtos = new ArrayList<>();
+        dtos.add(userInfoDTO);
+        ResponseDTO<UserInfoDTO> res= ResponseDTO.<UserInfoDTO>builder().data(dtos).build();
+        return ResponseEntity.ok().body(res);
+
     }
 
 }

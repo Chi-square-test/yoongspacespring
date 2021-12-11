@@ -32,4 +32,10 @@ public class CommentEntity {
 
     @CreationTimestamp
     Date commentwrite;
+
+    @Column(nullable = false)
+    private String writername;
+
+    @Column(nullable = false)
+    private String writerinform;
 }

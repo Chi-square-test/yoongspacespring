@@ -21,6 +21,8 @@ public class FeedDTO {
     private Long like;
     private String studentid;
     private String feedwrite;
+    private String writername;
+    private String writerinform;
 
     public FeedDTO(final FeedEntity entity){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd a hh:mm:ss");
@@ -31,6 +33,8 @@ public class FeedDTO {
         this.like=entity.getFeedlike();
         this.studentid=entity.getStudentid();
         this.feedwrite=df.format(entity.getFeedwrite());
+        this.writername=entity.getWritername();
+        this.writerinform=entity.getWriterinform();
 
     }
 

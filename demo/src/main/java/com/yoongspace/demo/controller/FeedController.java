@@ -4,6 +4,7 @@ import com.yoongspace.demo.DTO.FeedDTO;
 import com.yoongspace.demo.DTO.ResponseDTO;
 import com.yoongspace.demo.model.FeedEntity;
 import com.yoongspace.demo.service.FeedService;
+import com.yoongspace.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,9 @@ public class FeedController {
     @Autowired
     private FeedService feedService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping
     public ResponseEntity<?> getFeed(@AuthenticationPrincipal String studentid){
         List<FeedEntity> entities = feedService.allfeed(studentid);
@@ -37,6 +41,8 @@ public class FeedController {
             FeedEntity entity=FeedDTO.toEntity(feedDTO);
             entity.setId(null);
             entity.setStudentid(studentid);
+            entity.setWritername(userService.getStudentname(studentid));
+            entity.setWriterinform(userService.getStudentinfo(studentid));
             List<FeedEntity> entities = feedService.create(entity);
             List<FeedDTO> dtos = entities.stream().map(FeedDTO::new).collect(Collectors.toList());
             ResponseDTO<FeedDTO> res= ResponseDTO.<FeedDTO>builder().data(dtos).build();

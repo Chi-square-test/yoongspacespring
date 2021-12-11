@@ -12,7 +12,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
+							"pm.test(\"Server is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
@@ -44,7 +44,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
+							"pm.test(\"signup code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
@@ -86,11 +86,11 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
+							"pm.test(\"signin code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Your test name\", function () {\r",
+							"pm.test(\"set header\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.globals.set(\"test_value\", jsonData.token);\r",
 							"});"
@@ -142,7 +142,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
+							"pm.test(\"Usermenu is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
@@ -174,7 +174,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
+							"pm.test(\"Wrong token check\", function () {\r",
 							"    pm.response.to.have.status(403);\r",
 							"});"
 						],
@@ -225,7 +225,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
+							"pm.test(\"getfeed is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
@@ -266,11 +266,11 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
+							"pm.test(\"feed write is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Your test name\", function () {\r",
+							"pm.test(\"check writed feed\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData.data[0]).exist;\r",
 							"});"
@@ -284,7 +284,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "\r\n{\r\n    \"id\" : 5,\r\n    \"cat\":\"free\",\r\n    \"onlyfriend\": \"True\",\r\n    \"feedtext\" : \"test\"\r\n}",
+					"raw": "\r\n{\r\n    \"cat\":\"free\",\r\n    \"onlyfriend\": \"True\",\r\n    \"feedtext\" : \"test\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -322,7 +322,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
+							"pm.test(\"check owener\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],
@@ -370,11 +370,11 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
+							"pm.test(\"edit success\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Your test name\", function () {\r",
+							"pm.test(\"check edited feed\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData.data[0].feedtext).to.eql(\"edit\");\r",
 							"});\r",
@@ -427,7 +427,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
+							"pm.test(\"deleted success\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});"
 						],

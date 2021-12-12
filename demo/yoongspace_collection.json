@@ -574,7 +574,7 @@
 						"exec": [
 							"pm.test(\"유저 정보 체크\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.data[0].username).to.eql(\"testguy\");\r",
+							"    pm.expect(jsonData.username).to.eql(\"testguy\");\r",
 							"});"
 						],
 						"type": "text/javascript"

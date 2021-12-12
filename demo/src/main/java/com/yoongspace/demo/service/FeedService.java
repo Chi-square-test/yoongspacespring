@@ -52,6 +52,19 @@ public class FeedService {
         return all;
     }
 
+    public List<FeedEntity> onlyfeed(final String studentId){
+        List<FeedEntity> onlyf = new ArrayList<>();
+        onlyf.addAll(repo.findByStudentid(studentId));
+        List<FriendEntity> friendEntities=frepo.findByFriendA(studentId);
+        log.info(studentId);
+        if (!friendEntities.isEmpty()){
+            for (FriendEntity fe:friendEntities){
+                onlyf.addAll(repo.findByStudentid(fe.getFriendB()));
+            }
+        }
+        return onlyf;
+    }
+
     public List<FeedEntity> update(final FeedEntity entity){
         validate(entity,false);
         final Optional<FeedEntity> original = repo.findById(entity.getId());

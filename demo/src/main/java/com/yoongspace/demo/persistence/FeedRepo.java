@@ -10,6 +10,7 @@ public interface FeedRepo extends JpaRepository<FeedEntity, String> {
     int countByIdAndStudentid(Long id,String studentid);
     List<FeedEntity> findByOnlyfriend(boolean onlyfriend);
     List<FeedEntity> findByOnlyfriendAndStudentid(boolean onlyfriend,String studentid);
+    List<FeedEntity> findByStudentid(String studentid);
 
     Optional<FeedEntity> findById(Long id);
 }

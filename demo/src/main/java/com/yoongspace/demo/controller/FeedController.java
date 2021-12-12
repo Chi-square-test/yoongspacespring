@@ -14,6 +14,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,10 +36,14 @@ public class FeedController {
     @GetMapping
     public ResponseEntity<?> getFeed(@AuthenticationPrincipal String studentid){
         List<FeedEntity> entities = feedService.allfeed(studentid);
-        List<FeedDTO> dtos = entities.stream().map(FeedDTO::new).collect(Collectors.toList());
-        ResponseDTO<FeedDTO> res= ResponseDTO.<FeedDTO>builder().data(dtos).build();
+        return getResponseEntity(entities);
+    }
 
-        return ResponseEntity.ok().body(res);
+
+    @GetMapping("/onlyf")
+    public ResponseEntity<?> getonlyFeed(@AuthenticationPrincipal String studentid){
+        List<FeedEntity> entities = feedService.onlyfeed(studentid);
+        return getResponseEntity(entities);
     }
 
 
@@ -52,10 +58,7 @@ public class FeedController {
             entity.setWritername(user.getUsername());
             entity.setWriterinform(inform);
             List<FeedEntity> entities = feedService.create(entity);
-            List<FeedDTO> dtos = entities.stream().map(FeedDTO::new).collect(Collectors.toList());
-            ResponseDTO<FeedDTO> res= ResponseDTO.<FeedDTO>builder().data(dtos).build();
-
-            return ResponseEntity.ok().body(res);
+            return getResponseEntity(entities);
         } catch (Exception e) {
             String error = e.getMessage();
             ResponseDTO<FeedDTO> res = ResponseDTO.<FeedDTO>builder().error(error).build();
@@ -82,10 +85,7 @@ public class FeedController {
             entity.setId(dto.getId());
             entity.setStudentid(studentid);
             List<FeedEntity> entities = feedService.update(entity);
-            List<FeedDTO> dtos = entities.stream().map(FeedDTO::new).collect(Collectors.toList());
-            ResponseDTO<FeedDTO> res= ResponseDTO.<FeedDTO>builder().data(dtos).build();
-
-            return ResponseEntity.ok().body(res);
+            return getResponseEntity(entities);
         }catch (Exception e) {
             String error = e.getMessage();
             ResponseDTO<FeedDTO> res = ResponseDTO.<FeedDTO>builder().error(error).build();
@@ -101,10 +101,7 @@ public class FeedController {
             entity.setId(dto.getId());
             entity.setStudentid(studentid);
             List<FeedEntity> entities = feedService.delete(entity);
-            List<FeedDTO> dtos = entities.stream().map(FeedDTO::new).collect(Collectors.toList());
-            ResponseDTO<FeedDTO> res= ResponseDTO.<FeedDTO>builder().data(dtos).build();
-
-            return ResponseEntity.ok().body(res);
+            return getResponseEntity(entities);
         }catch (Exception e) {
             String error = e.getMessage();
             ResponseDTO<FeedDTO> res = ResponseDTO.<FeedDTO>builder().error(error).build();
@@ -202,6 +199,13 @@ public class FeedController {
             ResponseDTO<CommentDTO> res = ResponseDTO.<CommentDTO>builder().error(error).build();
             return ResponseEntity.badRequest().body(res);
         }
+    }
+
+    private ResponseEntity<?> getResponseEntity(List<FeedEntity> entities) {
+        List<FeedDTO> dtos = entities.stream().map(FeedDTO::new).collect(Collectors.toList());
+        Collections.sort(dtos);
+        ResponseDTO<FeedDTO> res= ResponseDTO.<FeedDTO>builder().data(dtos).build();
+        return ResponseEntity.ok().body(res);
     }
 
 }

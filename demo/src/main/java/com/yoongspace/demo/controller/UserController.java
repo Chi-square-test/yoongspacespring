@@ -58,6 +58,7 @@ public class UserController {
         if(user !=null){
             final String token =tokenProvider.create(user);
             final UserDTO resuserDTO = userDTO.builder()
+                    .username(user.getUsername())
                     .studentid(user.getStudentid())
                     .token(token)
                     .build();

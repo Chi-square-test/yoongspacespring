@@ -50,12 +50,6 @@ public class FeedDTO implements Comparable<FeedDTO>{
 
     @Override
     public int compareTo(FeedDTO dto) {
-        if (dto.writedate.before(writedate)) {
-            return 1;
-        } else if (dto.writedate.after(writedate)) {
-            return -1;
-        }
-        return 0;
-
+        return dto.writedate.compareTo(writedate);
     }
 }

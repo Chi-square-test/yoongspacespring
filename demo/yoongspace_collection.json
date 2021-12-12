@@ -80,6 +80,48 @@
 			"response": []
 		},
 		{
+			"name": "signup Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"signup code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"testguy2\",\r\n    \"email\": \"testguy2@kw.ac.kr\",\r\n    \"password\": \"testpw\",\r\n    \"studentid\": 20192048888,\r\n    \"grade\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/yoongauth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"yoongauth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "signin",
 			"event": [
 				{
@@ -105,6 +147,53 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"password\": \"testpw\",\r\n    \"studentid\": 20192049999\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/yoongauth/signin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"yoongauth",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signin Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"signin code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"set header\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.globals.set(\"test_value2\", jsonData.token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"password\": \"testpw\",\r\n    \"studentid\": 20192048888\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -285,6 +374,62 @@
 				"body": {
 					"mode": "raw",
 					"raw": "\r\n{\r\n    \"cat\":\"free\",\r\n    \"onlyfriend\": \"True\",\r\n    \"feedtext\" : \"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/yoongfeed/write",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"yoongfeed",
+						"write"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "yoongwrite Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({ key: 'Authorization', value: 'Bearer '+ pm.globals.get(\"test_value2\")});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"feed write is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"check writed feed\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data[0]).exist;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n    \"cat\":\"free\",\r\n    \"onlyfriend\": \"True\",\r\n    \"feedtext\" : \"test22\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -764,6 +909,273 @@
 					"path": [
 						"yoongfeed",
 						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({ key: 'Authorization', value: 'Bearer '+ pm.globals.get(\"test_value\")});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/yoongfriend",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"yoongfriend"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add friend",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({ key: 'Authorization', value: 'Bearer '+ pm.globals.get(\"test_value\")});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"add is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"otherid\":\"20192048888\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/yoongfriend",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"yoongfriend"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add friend check",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({ key: 'Authorization', value: 'Bearer '+ pm.globals.get(\"test_value\")});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"check addf 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"check add\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data[0].myfriend).to.eql(true);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/yoongfriend",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"yoongfriend"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check yoongfeed onlyfriend",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({ key: 'Authorization', value: 'Bearer '+ pm.globals.get(\"test_value\")});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"only is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"only chenk\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data[0]).exist;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/yoongfeed",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"yoongfeed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete friend",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({ key: 'Authorization', value: 'Bearer '+ pm.globals.get(\"test_value\")});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"otherid\":\"20192048888\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/yoongfriend",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"yoongfriend"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check delete",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({ key: 'Authorization', value: 'Bearer '+ pm.globals.get(\"test_value\")});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"check delete 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"check delete\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data[0].myfriend).to.eql(false);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/yoongfriend",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"yoongfriend"
 					]
 				}
 			},

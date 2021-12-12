@@ -40,17 +40,13 @@ public class UserService {
 
     }
 
-    public String getStudentname(String studentid){
-        final UserEntity User = userrepo.findByStudentid(studentid);
-        return User.getUsername();
 
+    public UserEntity getStudentinfo(String studentid){
+        final UserEntity User = userrepo.findByStudentid(studentid);
+        return User;
     }
 
-    public String getStudentinfo(String studentid){
-        final UserEntity User = userrepo.findByStudentid(studentid);
-        String inform=User.getGrade()+"학년/"+studentid.substring(2,4)+"학번";
-        return inform;
-    }
+
 
 
 

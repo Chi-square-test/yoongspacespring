@@ -1,11 +1,9 @@
 package com.yoongspace.demo.controller;
 
-import com.yoongspace.demo.DTO.CommentDTO;
-import com.yoongspace.demo.DTO.FeedDTO;
-import com.yoongspace.demo.DTO.ResponseDTO;
-import com.yoongspace.demo.DTO.UserInfoDTO;
+import com.yoongspace.demo.DTO.*;
 import com.yoongspace.demo.model.CommentEntity;
 import com.yoongspace.demo.model.FeedEntity;
+import com.yoongspace.demo.model.UserEntity;
 import com.yoongspace.demo.service.CommentService;
 import com.yoongspace.demo.service.FeedService;
 import com.yoongspace.demo.service.UserService;
@@ -46,11 +44,13 @@ public class FeedController {
     @PostMapping("/write")
     public ResponseEntity<?> createFeed(@AuthenticationPrincipal String studentid, @RequestBody FeedDTO feedDTO){
         try{
+            UserEntity user =userService.getStudentinfo(studentid);
             FeedEntity entity=FeedDTO.toEntity(feedDTO);
+            String inform=user.getGrade()+"학년/"+studentid.substring(2,4)+"학번";
             entity.setId(null);
             entity.setStudentid(studentid);
-            entity.setWritername(userService.getStudentname(studentid));
-            entity.setWriterinform(userService.getStudentinfo(studentid));
+            entity.setWritername(user.getUsername());
+            entity.setWriterinform(inform);
             List<FeedEntity> entities = feedService.create(entity);
             List<FeedDTO> dtos = entities.stream().map(FeedDTO::new).collect(Collectors.toList());
             ResponseDTO<FeedDTO> res= ResponseDTO.<FeedDTO>builder().data(dtos).build();
@@ -114,13 +114,14 @@ public class FeedController {
 
     @GetMapping("/currentuser") //새로운 컨트롤러로 분리해야하지만 임시로 피드에서 관리
     public ResponseEntity<?> connectuserinfo(@AuthenticationPrincipal String studentid){
-        String username=userService.getStudentname(studentid);
-        String userinfo=userService.getStudentinfo(studentid);
-        UserInfoDTO userInfoDTO =new UserInfoDTO(username,userinfo);
-        List<UserInfoDTO> dtos = new ArrayList<>();
-        dtos.add(userInfoDTO);
-        ResponseDTO<UserInfoDTO> res= ResponseDTO.<UserInfoDTO>builder().data(dtos).build();
-        return ResponseEntity.ok().body(res);
+        UserEntity userinfo=userService.getStudentinfo(studentid);
+        final UserDTO resuserDTO=UserDTO.builder()
+                .studentid(userinfo.getStudentid())
+                .username(userinfo.getUsername())
+                .grade(userinfo.getGrade())
+                .userinfo(userinfo.getUserinfo())
+                .build();
+        return ResponseEntity.ok().body(resuserDTO);
 
     }
 
@@ -140,11 +141,13 @@ public class FeedController {
     @PostMapping("/comment") //댓글도 분리를 해야하나 임시로 피드에서 관리
     public ResponseEntity commentwrite(@AuthenticationPrincipal String studentid, @RequestBody CommentDTO dto){
         try{
+            UserEntity user =userService.getStudentinfo(studentid);
+            String inform=user.getGrade()+"학년/"+studentid.substring(2,4)+"학번";
             CommentEntity entity=CommentDTO.toEntity(dto);
             entity.setId(null);
             entity.setStudentid(studentid);
-            entity.setWritername(userService.getStudentname(studentid));
-            entity.setWriterinform(userService.getStudentinfo(studentid));
+            entity.setWritername(user.getUsername());
+            entity.setWriterinform(inform);
             List<CommentEntity> entities = commentService.commentcreate(entity);
             List<CommentDTO> dtos = entities.stream().map(CommentDTO::new).collect(Collectors.toList());
             ResponseDTO<CommentDTO> res= ResponseDTO.<CommentDTO>builder().data(dtos).build();

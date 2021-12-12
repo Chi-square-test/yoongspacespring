@@ -203,7 +203,7 @@ public class FeedController {
 
     private ResponseEntity<?> getResponseEntity(List<FeedEntity> entities) {
         List<FeedDTO> dtos = entities.stream().map(FeedDTO::new).collect(Collectors.toList());
-        Collections.sort(dtos);
+        Collections.sort(dtos, Collections.reverseOrder());
         ResponseDTO<FeedDTO> res= ResponseDTO.<FeedDTO>builder().data(dtos).build();
         return ResponseEntity.ok().body(res);
     }

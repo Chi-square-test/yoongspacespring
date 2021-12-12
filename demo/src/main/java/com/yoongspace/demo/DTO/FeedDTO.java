@@ -13,7 +13,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FeedDTO {
+public class FeedDTO implements Comparable<FeedDTO>{
     private Long id;
     private String cat;
     private boolean onlyfriend;
@@ -23,6 +23,7 @@ public class FeedDTO {
     private String feedwrite;
     private String writername;
     private String writerinform;
+    private Date writedate;
 
     public FeedDTO(final FeedEntity entity){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd a hh:mm:ss");
@@ -35,6 +36,7 @@ public class FeedDTO {
         this.feedwrite=df.format(entity.getFeedwrite());
         this.writername=entity.getWritername();
         this.writerinform=entity.getWriterinform();
+        this.writedate=entity.getFeedwrite();
 
     }
 
@@ -44,5 +46,16 @@ public class FeedDTO {
                 .onlyfriend(dto.isOnlyfriend())
                 .feedtext(dto.getFeedtext())
                 .build();
+    }
+
+    @Override
+    public int compareTo(FeedDTO dto) {
+        if (dto.writedate.before(writedate)) {
+            return 1;
+        } else if (dto.writedate.after(writedate)) {
+            return -1;
+        }
+        return 0;
+
     }
 }

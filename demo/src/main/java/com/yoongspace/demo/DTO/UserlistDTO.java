@@ -16,7 +16,7 @@ public class UserlistDTO {
     private String grade;
     private String photo;
     private String studentid;
-    private boolean myfriend=false;
+    @Builder.Default private boolean myfriend=false;
 
     public UserlistDTO(final UserEntity entity){
         this.username=entity.getUsername();

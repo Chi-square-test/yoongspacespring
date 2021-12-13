@@ -28,6 +28,6 @@ public class ProfileController {
         log.info(String.valueOf(multipartFile));
         String imgPath = s3Service.upload(multipartFile,studentid);
         profileService.saveprofileimage(studentid,imgPath);
-        return ResponseEntity.ok().body(studentid);
+        return ResponseEntity.ok().body(imgPath);
     }
 }

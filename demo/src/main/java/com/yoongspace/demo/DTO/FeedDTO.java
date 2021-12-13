@@ -24,6 +24,7 @@ public class FeedDTO implements Comparable<FeedDTO>{
     private String writername;
     private String writerinform;
     private Date writedate;
+    private String writerpicture;
 
     public FeedDTO(final FeedEntity entity){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd a hh:mm:ss");
@@ -37,6 +38,7 @@ public class FeedDTO implements Comparable<FeedDTO>{
         this.writername=entity.getWritername();
         this.writerinform=entity.getWriterinform();
         this.writedate=entity.getFeedwrite();
+        this.writerpicture=entity.getWriterpicture();
 
     }
 

@@ -49,6 +49,9 @@ public class FeedEntity {
     @Column(nullable = false)
     private String writerinform;
 
+    @Column
+    private  String writerpicture;
+
 
 
 }

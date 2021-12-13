@@ -57,6 +57,7 @@ public class FeedController {
             entity.setStudentid(studentid);
             entity.setWritername(user.getUsername());
             entity.setWriterinform(inform);
+            entity.setWriterpicture(user.getPhoto());
             List<FeedEntity> entities = feedService.create(entity);
             return getResponseEntity(entities);
         } catch (Exception e) {
@@ -113,6 +114,7 @@ public class FeedController {
     public ResponseEntity<?> connectuserinfo(@AuthenticationPrincipal String studentid){
         UserEntity userinfo=userService.getStudentinfo(studentid);
         final UserDTO resuserDTO=UserDTO.builder()
+                .photo(userinfo.getPhoto())
                 .studentid(userinfo.getStudentid())
                 .username(userinfo.getUsername())
                 .grade(userinfo.getGrade())

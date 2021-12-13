@@ -3,7 +3,6 @@ package com.yoongspace.demo.service;
 import com.yoongspace.demo.model.FeedEntity;
 import com.yoongspace.demo.model.FriendEntity;
 import com.yoongspace.demo.model.LikeEntity;
-import com.yoongspace.demo.persistence.CommentRepo;
 import com.yoongspace.demo.persistence.FeedRepo;
 import com.yoongspace.demo.persistence.FriendRepo;
 import com.yoongspace.demo.persistence.LikeRepo;

@@ -45,6 +45,16 @@ public class FeedController {
         List<FeedEntity> entities = feedService.onlyfeed(studentid);
         return getResponseEntity(entities);
     }
+    @GetMapping("/tips")
+    public ResponseEntity<?> gettips(@AuthenticationPrincipal String studentid){
+        List<FeedEntity> entities = feedService.tipsfeed();
+        return getResponseEntity(entities);
+    }
+    @GetMapping("/team")
+    public ResponseEntity<?> getteam(@AuthenticationPrincipal String studentid){
+        List<FeedEntity> entities = feedService.teamfeed();
+        return getResponseEntity(entities);
+    }
 
 
     @PostMapping("/write")

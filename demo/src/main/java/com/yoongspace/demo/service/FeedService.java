@@ -38,8 +38,8 @@ public class FeedService {
         List<FeedEntity> all;
         List<FeedEntity> onlyf = new ArrayList<>();
         List<FriendEntity> friendEntities;
-        all=repo.findByOnlyfriend(false);
-        log.info(studentId);
+        all=repo.findByOnlyfriendAndAndCat(false,"free");
+        log.info("전체 자유게시판 호출");
         all.addAll(repo.findByOnlyfriendAndStudentid(true,studentId));
         if (!frepo.findByFriendA(studentId).isEmpty()){
             friendEntities = frepo.findByFriendA(studentId);
@@ -51,11 +51,21 @@ public class FeedService {
         return all;
     }
 
+    public List<FeedEntity> tipsfeed(){
+        log.info("팁게시판 호출");
+        return repo.findByOnlyfriendAndAndCat(false,"tips");
+    }
+
+    public List<FeedEntity> teamfeed(){
+        log.info("팁게시판 호출");
+        return repo.findByOnlyfriendAndAndCat(false,"team");
+    }
+
     public List<FeedEntity> onlyfeed(final String studentId){
         List<FeedEntity> onlyf = new ArrayList<>();
         onlyf.addAll(repo.findByStudentid(studentId));
         List<FriendEntity> friendEntities=frepo.findByFriendA(studentId);
-        log.info(studentId);
+        log.info("친구전용 호출");
         if (!friendEntities.isEmpty()){
             for (FriendEntity fe:friendEntities){
                 onlyf.addAll(repo.findByStudentid(fe.getFriendB()));

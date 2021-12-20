@@ -125,7 +125,7 @@ public class FeedService {
             if(Lrepo.existsByFeedidAndStudentid(feedid,studentid)){
                 LikeEntity likeEntity = Lrepo.findByFeedidAndStudentid(feedid,studentid);
                 Lrepo.delete(likeEntity);
-                final Optional<FeedEntity> original = repo.findById(new Long(feedid).longValue());
+                final Optional<FeedEntity> original = repo.findById(new Long(feedid));
                 original.ifPresent(feed->{
                     feed.setFeedlike(feed.getFeedlike()-1);
                     repo.save(feed);
